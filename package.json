@@ -1,6 +1,6 @@
 {
   "name": "only-pnpm",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Only allow use `pnpm` as package manager",
   "keywords": [
     "pnpm",
@@ -44,11 +44,6 @@
     "mrm-core": "^7.0.0",
     "v8-compile-cache": "^2.3.0"
   },
-  "engines": {
-    "pnpm": "^7.0.1",
-    "node": ">= 16.14.1",
-    "npm": "forbidden, use pnpm",
-    "yarn": "forbidden, use pnpm"
-  },
+  "packageManager": "pnpm@7.0.1",
   "license": "MIT"
 }
