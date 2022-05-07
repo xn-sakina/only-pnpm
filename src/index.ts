@@ -14,19 +14,20 @@ export const run = async () => {
   assert(existsSync(pkgPath), `package.json must be exist`)
   const pkg = require(pkgPath)
   let pkgMrm = packageJson(pkg)
+  const pnpmV = await geyPnpmVersion()
   // 1. set only-allow
   if (!pkgMrm.get('scripts.preinstall') && isMonorepo({ cwd: pwd })) {
     const isOnlyAllowInstalled =
       pkg?.devDependencies?.[ONLY_ALLOW] || pkg?.dependencies?.[ONLY_ALLOW]
     if (!isOnlyAllowInstalled) {
-      await install(ONLY_ALLOW)
+      await install({ pkg: ONLY_ALLOW, pnpm: pnpmV })
       // refresh
       pkgMrm = packageJson(require(pkgPath))
     }
     pkgMrm.setScript('preinstall', 'npx only-allow pnpm')
   }
   // 2. set engines
-  const pnpmVersion = `^${await geyPnpmVersion()}`
+  const pnpmVersion = `^${pnpmV}`
   const nodeVersion = `>= ${await getNodeVersion()}`
   pkgMrm
     .set('engines.pnpm', pnpmVersion)
@@ -36,8 +37,9 @@ export const run = async () => {
     .save()
 }
 
-async function install(pkg: string) {
-  await execa(`pnpm`, ['add', '-D', pkg], {
+async function install(opts: { pkg: string; pnpm: string }) {
+  const isLegacyPnpm = opts.pnpm.startsWith('6')
+  await execa(`pnpm`, ['add', '-D', isLegacyPnpm ? '-W' : '-w', opts.pkg], {
     stdio: 'inherit',
   })
 }
