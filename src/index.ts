@@ -34,6 +34,7 @@ export const run = async () => {
     .set('engines.node', nodeVersion)
     .set('engines.yarn', FORBIDDEN)
     .set('engines.npm', FORBIDDEN)
+    .set('packageManager', `pnpm@${pnpmV}`)
     .save()
 }
 
