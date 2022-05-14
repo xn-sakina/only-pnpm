@@ -1,6 +1,6 @@
 {
   "name": "only-pnpm",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Only allow use `pnpm` as package manager",
   "keywords": [
     "pnpm",
